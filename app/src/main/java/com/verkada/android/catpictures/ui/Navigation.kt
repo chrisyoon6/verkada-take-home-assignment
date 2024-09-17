@@ -20,6 +20,11 @@ import com.verkada.android.catpictures.data.BottomTabItem
 import com.verkada.android.catpictures.theme.LightBlue
 import com.verkada.android.catpictures.viewmodel.MainViewModel
 
+const val BOTTOM_TAB_ICON_SIZE_DP = 24
+
+/**
+ * Represents the bottom navigation tab
+ */
 @Composable
 fun BottomTabNavigation(bottomTabItems: List<BottomTabItem>, navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -34,7 +39,7 @@ fun BottomTabNavigation(bottomTabItems: List<BottomTabItem>, navController: NavH
                     Icon(
                         ImageVector.vectorResource(bottomTabItem.resourceId),
                         contentDescription = bottomTabItem.route,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(BOTTOM_TAB_ICON_SIZE_DP.dp)
                     )
                 },
                 label = { Text(bottomTabItem.route) },
@@ -58,6 +63,9 @@ fun BottomTabNavigation(bottomTabItems: List<BottomTabItem>, navController: NavH
     }
 }
 
+/**
+ * Handles the navigation between different tabs
+ */
 @Composable
 fun NavigationHandler(viewModel: MainViewModel, navController: NavHostController, modifier: Modifier) {
     NavHost(navController, startDestination = BottomTabItem.Home.route, modifier = modifier) {

@@ -11,10 +11,10 @@ import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
     private val pictureService = PictureClient.pictureService
-    val pictures = mutableStateOf<List<Picture>>(emptyList())
-    val selectedPicture = mutableStateOf<Picture?>(null)
-    var favoritePictures = mutableStateListOf<Picture>()
+    val selectedPictureIndexState = mutableStateOf<Int>(-1)
     var selectedFavoritePictureIndex = mutableStateOf<Int>(-1)
+    var favoritePictures = mutableStateListOf<Picture>()
+    var pictures = mutableStateListOf<Picture>()
 
     private val TAG = MainViewModel::class.java.simpleName
 
@@ -22,10 +22,16 @@ class MainViewModel: ViewModel() {
         updatePictures()
     }
 
-    fun updatePictures() {
+    /**
+     * Updates the list of pictures obtained
+     */
+    private fun updatePictures() {
         viewModelScope.launch {
             try {
-                pictures.value = pictureService.pictures()
+                pictures.clear()
+                pictureService.pictures().forEach {
+                    pictures.add(it)
+                }
             } catch(e : Exception) {
                 // TODO: handle
                 Log.d(TAG, e.toString())

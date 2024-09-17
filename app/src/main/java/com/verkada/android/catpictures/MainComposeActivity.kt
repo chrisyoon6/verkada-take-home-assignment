@@ -1,6 +1,5 @@
 package com.verkada.android.catpictures
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +17,6 @@ import com.verkada.android.catpictures.viewmodel.MainViewModel
 class MainComposeActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
