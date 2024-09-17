@@ -14,6 +14,7 @@ class MainViewModel: ViewModel() {
     val pictures = mutableStateOf<List<Picture>>(emptyList())
     val selectedPicture = mutableStateOf<Picture?>(null)
     var favoritePictures = mutableStateListOf<Picture>()
+    var selectedFavoritePictureIndex = mutableStateOf<Int>(-1)
 
     private val TAG = MainViewModel::class.java.simpleName
 

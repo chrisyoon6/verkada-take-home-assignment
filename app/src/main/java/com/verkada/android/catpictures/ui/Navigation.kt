@@ -7,26 +7,26 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.verkada.android.catpictures.data.BottomTabItem
+import com.verkada.android.catpictures.theme.LightBlue
 import com.verkada.android.catpictures.viewmodel.MainViewModel
 
 @Composable
 fun BottomTabNavigation(bottomTabItems: List<BottomTabItem>, navController: NavHostController) {
-    val selectedTab by remember { mutableStateOf(BottomTabItem.Home) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val selectedTabRoute = navBackStackEntry?.destination?.route
 
     BottomNavigation(
-        backgroundColor = Color.White
+        backgroundColor = LightBlue
     ) {
         bottomTabItems.forEach { bottomTabItem ->
             BottomNavigationItem(
@@ -38,7 +38,7 @@ fun BottomTabNavigation(bottomTabItems: List<BottomTabItem>, navController: NavH
                     )
                 },
                 label = { Text(bottomTabItem.route) },
-                selected = bottomTabItem.route == selectedTab.route,
+                selected = bottomTabItem.route == selectedTabRoute,
                 onClick = {
                     navController.navigate(bottomTabItem.route) {
                         // TODO
@@ -59,10 +59,13 @@ fun BottomTabNavigation(bottomTabItems: List<BottomTabItem>, navController: NavH
 }
 
 @Composable
-fun NavigationHandler(viewModel: MainViewModel, navController: NavHostController) {
-    NavHost(navController, startDestination = BottomTabItem.Home.route) {
+fun NavigationHandler(viewModel: MainViewModel, navController: NavHostController, modifier: Modifier) {
+    NavHost(navController, startDestination = BottomTabItem.Home.route, modifier = modifier) {
         composable(BottomTabItem.Home.route) {
             HomeScreen(viewModel)
+        }
+        composable(BottomTabItem.Favorites.route) {
+            FavoritesScreen(viewModel)
         }
     }
 }

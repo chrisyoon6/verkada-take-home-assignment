@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -45,13 +47,13 @@ fun SelectedPicture(viewModel: MainViewModel) {
     }
     selectedPicture?.let {
         Box(
-            modifier = Modifier.fillMaxHeight(0.35f)
+            modifier = Modifier.fillMaxHeight(0.35f).fillMaxWidth()
         ) {
             AsyncImage(
                 model = it.url,
                 contentDescription = it.id,
                 contentScale = ContentScale.Inside,
-                modifier = Modifier.padding(horizontal = 50.dp, vertical = 24.dp)
+                modifier = Modifier.padding(horizontal = 60.dp, vertical = 24.dp).align(Alignment.Center)
             )
             val drawable = if (favorites.contains(it)) {
                 R.drawable.fav_filled
@@ -66,10 +68,13 @@ fun SelectedPicture(viewModel: MainViewModel) {
                     .clickable {
                         if (favorites.contains(it)) {
                             favorites.remove(it)
+                            if (favorites.isEmpty() || viewModel.selectedFavoritePictureIndex.value == favorites.size) {
+                                viewModel.selectedFavoritePictureIndex.value = -1
+                            }
                         } else {
                             favorites.add(it)
                         }
-                    }.padding(10.dp).fillMaxHeight(0.35f)
+                    }.padding(5.dp)
             )
         }
     }
@@ -85,7 +90,8 @@ fun PicturesGrid(viewModel: MainViewModel) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(3.dp),
-        horizontalArrangement = Arrangement.spacedBy(3.dp)
+        horizontalArrangement = Arrangement.spacedBy(3.dp),
+        modifier = Modifier.padding(3.dp)
     ) {
         items(pictures.size) { index ->
             val picture = pictures[index]
@@ -97,13 +103,14 @@ fun PicturesGrid(viewModel: MainViewModel) {
                 model = picture.url,
                 contentDescription = picture.id,
                 colorFilter = colorFilter,
+                contentScale = ContentScale.FillHeight,
                 modifier = Modifier.clickable {
                     if (selectedPicture == picture) {
                         selectedPicture = null
                     } else {
                         selectedPicture = picture
                     }
-                }.fillMaxHeight(0.65f)
+                }.heightIn(min = 150.dp)
             )
         }
     }
