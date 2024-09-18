@@ -46,7 +46,6 @@ fun BottomTabNavigation(bottomTabItems: List<BottomTabItem>, navController: NavH
                 selected = bottomTabItem.route == selectedTabRoute,
                 onClick = {
                     navController.navigate(bottomTabItem.route) {
-                        // TODO
                         navController.graph.startDestinationRoute?.let {
                             popUpTo(it) {
                                 saveState = true

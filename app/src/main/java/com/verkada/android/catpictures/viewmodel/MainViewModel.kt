@@ -33,7 +33,6 @@ class MainViewModel: ViewModel() {
                     pictures.add(it)
                 }
             } catch(e : Exception) {
-                // TODO: handle
                 Log.d(TAG, e.toString())
             }
         }
